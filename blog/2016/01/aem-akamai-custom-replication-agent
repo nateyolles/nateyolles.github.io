@@ -1,0 +1,370 @@
+<!DOCTYPE html> 
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en"> 
+ <head> 
+  <title>Creating a custom Akamai replication agent in AEM - Adobe Experience Manager | AEM/CQ | Apache Sling</title> 
+  <link href="http://www.nateyolles.com/blog/2016/01/aem-akamai-custom-replication-agent" rel="canonical" /> 
+  <link href="/etc/clientlibs/nateyolles/css/publick-nateyolles.min.css" rel="stylesheet" /> 
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600" rel="stylesheet" type="text/css" /> 
+  <meta name="msapplication-config" content="/browserconfig.xml" /> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" /> 
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" /> 
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" /> 
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" /> 
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" /> 
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" /> 
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" /> 
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" /> 
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" /> 
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-96x96.png" sizes="96x96" /> 
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" /> 
+  <link rel="manifest" href="/manifest.json" /> 
+  <meta name="description" content="Create a custom replication agent in Adobe Experience Manager to purge Akamai CDN cache." /> 
+  <meta name="keywords" content="Adobe Experience Manager,AEM,CQ,akamai,replication agent,activation,replication" /> 
+  <meta name="author" content="Nate Yolles" /> 
+  <meta property="og:title" content="Creating a custom Akamai replication agent in AEM - Nate Yolles - Adobe Experience Manager" /> 
+  <meta property="og:type" content="article" /> 
+  <meta property="article:published_time" content="2016-01-05" /> 
+  <meta property="article:modified_time" content="2016-01-05" /> 
+  <meta property="article:author" content="Nate Yolles" /> 
+  <meta property="article:section" content="Technology" /> 
+  <meta property="article:tag" content="Adobe Experience Manager" /> 
+  <meta property="article:tag" content="AEM" /> 
+  <meta property="article:tag" content="CQ5" /> 
+  <meta property="article:tag" content="akamai" /> 
+  <meta property="article:tag" content="replication agent" /> 
+  <meta property="article:tag" content="activation" /> 
+  <meta property="article:tag" content="replication" /> 
+  <meta property="og:url" content="http://www.nateyolles.com/blog/2016/01/aem-akamai-custom-replication-agent" /> 
+  <meta property="og:image" content="http://www.nateyolles.com/assets/images/aem-akamai-custom-replication-agent.png" /> 
+  <meta property="og:description" content="Create a custom replication agent in Adobe Experience Manager to purge Akamai CDN cache." /> 
+  <meta name="twitter:card" content="summary_large_image" /> 
+  <meta name="twitter:site" content="@nateyolles" /> 
+  <meta name="twitter:creator" content="@nateyolles" /> 
+  <meta name="twitter:title" content="Creating a custom Akamai replication agent in AEM - Nate Yolles - Adobe Experience Manager" /> 
+  <meta name="twitter:description" content="Create a custom replication agent in Adobe Experience Manager to purge Akamai CDN cache." /> 
+  <meta name="twitter:image" content="http://www.nateyolles.com/assets/images/aem-akamai-custom-replication-agent.png" /> 
+  <meta charset="utf-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+ </head> 
+ <body data-spy="scroll" data-target="#navigation" data-offset="75"> 
+  <section id="navigation"> 
+   <div class="navbar navbar-default navbar-static-top sticky" role="navigation"> 
+    <div class="container"> 
+     <div class="navbar-header"> 
+      <form>
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> 
+       <a class="navbar-brand" href="/">Nate Yolles</a> 
+      </form>
+     </div> 
+     <div class="navbar-collapse collapse"> 
+      <ul class="nav navbar-nav navbar-right scrollto"> 
+       <li><a href="/#home">Home</a></li> 
+       <li><a href="/#about">About</a></li> 
+       <li><a href="/#skills">Skills</a></li> 
+       <li><a href="/#work">Work</a></li> 
+       <li><a href="/#projects">projects</a></li> 
+       <li><a href="/#contact">Contact</a></li> 
+       <li><a href="/blog">Blog</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="page-head-bg" style="background-image: url('/assets/images/aem-akamai-custom-replication-agent.png');" class="parallax" data-stellar-background-ratio=".5"> 
+   <div class="container"> 
+    <h1><span class="post-heading">Creating a custom Akamai replication agent in AEM</span></h1> 
+    <h2><span class="post-heading">Adobe Experience Manager | AEM/CQ | Apache Sling</span></h2> 
+   </div> 
+  </section> 
+  <section id="blog-post" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-9"> 
+      <div class="blog-item-sec"> 
+       <div class="blog-item-head"> 
+        <h3>Creating a custom Akamai replication agent in AEM</h3> 
+       </div> 
+       <div class="blog-item-post-info"> 
+        <span class="scrollto">Nate Yolles | January 05, 2016 | <a href="#comments" class="blog-view-comments">1002 comments</a> |</span> 
+       </div> 
+       <div class="blog-item-post-desc"> 
+        <div>
+         Replication is central to the AEM experience. AEM is about content and replication is how you move that content across servers. You're most likely using at least two of the out-of-the-box replication agents provided by Adobe: your default agent activates content from author to publish and your dispatcher flush agent clears your Dispatcher cache. AEM provides several other replication agents for tasks such as replicating in reverse (publish to author), moving content within the Adobe Marketing Cloud products such as Scene 7 and Test and Target, and static agents for replicating to the file system. This blog post details the steps used to create your own custom replication agents.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <img class="img-responsive" src="/content/assets/images/akamai_new_replication_agent.png" alt="Akamai replication agent selection dialog" />
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The following sample project demonstrates a custom replication agent which purges Akamai CDN (Content Delivery Network) cached content. 
+         <a href="https://github.com/nateyolles/aem-akamai-replication-agent" target="_blank">The full code for this blog is hosted on GitHub</a>. There are three pieces to this project: the transport handler, the content builder, and the replication agent's user interface.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">Transport Handler</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/javadoc/com/day/cq/replication/TransportHandler.html" target="_blank">TransportHandler</a> implementations control the communication with the destination server and determines when to report back a positive 
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/javadoc/com/day/cq/replication/ReplicationResult.html" target="_blank">ReplicationResult</a> to complete the activation and when to report back a negative ReplicationResult returning the activation to the queue.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="374b895f1438a2257eb1" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The default HTTP transport handler sends an authenticated request to the destination server specified in the &quot;Transport URI&quot; setting and expects an HTTP response with a status code of &quot;200 OK&quot; in order to mark the activation as successful. The Akamai CCU REST API responds with a status code of &quot;201 Created&quot; for a successful purge request. Therefore, a custom Transport Handler was utilized and given the responsibility for sending the POST requests, looking for 201 responses and returning the proper ReplicationResult.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The transport handler service determines which transport handler to use based on the overridden canHandle method. You'll notice that any replication agent configured with a &quot;Transport URI&quot; that begins with 
+         <code>http://</code> or 
+         <code>https://</code> will be handled by AEM's HTTP transport handler. The convention is to create a unique URL protocol/scheme and have your transport handler's canHandle method watch for Transport URIs that start with your URL scheme. For example, by navigating to a clean instance's 
+         <a href="http://localhost:4502/etc/replication/agents.author.html" target="_blank">Agents on Author</a> page, you'll find default AEM replication agents using 
+         <code>http://</code>, 
+         <code>static://</code>, 
+         <code>tnt://</code>, 
+         <code>s7delivery://</code> and 
+         <code>repo://</code>. In this example, the transport handler is activated on the 
+         <code>amakai://</code> scheme and uses the hard coded Akamai API REST endpoint. A popular convention is to set your transport handler's Transport URIs that start with something like &quot;foo-&quot;, which allows the user to configure their replication agent with either &quot;foo-http://&quot; or &quot;foo-https://&quot; and have your transport handler simply remove the custom prefix before making the HTTP request.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <img class="img-responsive" src="/content/assets/images/akamai_replication_agent_transport.png" alt="Akamai replication agent's Transport URI settings" />
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The transport handler also handles other 
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/javadoc/com/day/cq/replication/ReplicationActionType.html" target="_blank">ReplicationActionTypes</a>. The Akamai example implements the standard &quot;Test Connection&quot; feature of replication agents by making a GET request to the Akamai API endpoint which expects a &quot;200 OK&quot; response in return - it's simply testing the replication agent's configured username and password. The example does not implement other replication action types such as deletions, deactivations, and polling (reverse).
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         When you speak of a replication agent, you're first thought will probably be of the default agent that moves content from author to publish via HTTP. Likewise, I've been discussing the Akamai transport handler example and its usage of HTTP GET and POST requests. However, it's important to note that your transport handler doesn't need to make HTTP calls. For example, you can write an FTP transport handler or a transport handler that interacts with the server's file system like the static replication agent does. Your transport handler can do anything as long as it returns a positive or negative replication result to update the queue.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">Content Builder</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/javadoc/com/day/cq/replication/ContentBuilder.html" target="_blank">ContentBuilder</a> implementations build the body of the replication request. Implementations of the ContentBuilder interface end up as serialization options in the replication agent configuration dialog along side the Default, Dispatcher Flush, Binary less, and Static Content Builder options.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="cbe989094dec557d2403" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The provided Akamai example project could have been done without implementing a content builder; the logic in the content builder could have been completed in the transport handler as the transport handler created it's own request anyways. Another thing to consider is whether you need the session as ContentBuilder implementations gives you that while TransportHandler implementations do not.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         A perfect example of utilizing the content builder is in Andrew Khoury's 
+         <a href="https://github.com/cqsupport/webinar-dispatchercache/tree/master/src/refetching-flush-agent" target="_blank">Dispatcher refetching flush agent</a> where the default HTTP transport handler is still used to communicate with the Dispatcher and only the HTTP request body needed to be built out in order for Dispatcher to fetch and re-cache content.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">User Interface</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         By implementing a content builder, the user can simply use a default replication agent and choose the custom serialization type. However, the Akamai replication agent requires the following custom configurations:
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <ul>
+         <li>an option to remove versus invalidate content</li>
+         <li>an option to purge resources versus purging via CP Codes</li>
+         <li>an option to purge the production versus staging domain</li>
+         <li>the reverse replication option removed</li>
+        </ul> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <img class="img-responsive" src="/content/assets/images/akamai_replication_agent_cpcode.png" alt="Akamai replication agent dialog set to purge CP codes" />
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         A clean user interface was provided in order for users to implement and configure the Akamai replication agent. To accomplish this, a custom cq:Template as well as a corresponding cq:Component including the view and dialog was made. The easiest way is to copy the default replication agent from 
+         <code>/libs/cq/replication/templates/agent</code> and 
+         <code>/libs/cq/replication/components/agent</code> to 
+         <code>/apps/your-project/replication</code> and update the agent like any other AEM component.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         To keep things clean and simple, the Akamai replication agent component inherits from the default replication agent by setting the sling:resourceSuperType to 
+         <code>cq/replication/components/agent</code>. The only update needed to the copied component was the dialog options and the agent.jsp file as it contains JavaScript to open the dialog for which you need to update the path. Any additions to the dialog can be retrieved through the TransportContext's 
+         <code>getConfig().getProperties()</code> ValueMap.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <a href="https://github.com/nateyolles/aem-akamai-replication-agent" target="_blank" style="font-weight: bold;">Download the Akamai Replication Agent project from GitHub</a>.
+        </div> 
+       </div> 
+       <div class="blog-more-desc"> 
+        <div class="row"> 
+         <div class="col-sm-6 col-xs-12"> 
+          <ul class="list-inline social-colored"> 
+           <li class="empty-text">Share:</li> 
+           <li><a href="#"><i class="fa logo-l icon-in share" data-toggle="tooltip" title="" data-original-title="LinkedIn" data-placement="top" data-url="http://www.nateyolles.com/blog/2016/01/aem-akamai-custom-replication-agent" data-title="Creating a custom Akamai replication agent in AEM" data-summary="Create a custom replication agent in Adobe Experience Manager to purge Akamai CDN cache." data-source="nateyolles.com"></i></a></li> 
+           <li><a href="#"><i class="fa logo-t icon-twit share" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top" data-text="Creating a custom Akamai replication agent in AEM" data-via="nateyolles" data-url="http://www.nateyolles.com/blog/2016/01/aem-akamai-custom-replication-agent"></i></a></li> 
+           <li><a href="#"><i class="fa logo-f icon-f share" data-toggle="tooltip" title="" data-original-title="Facebook" data-placement="top"></i></a></li> 
+           <li><a href="#"><i class="fa logo-p icon-plus share" data-url="http://www.nateyolles.com/blog/2016/01/aem-akamai-custom-replication-agent" data-toggle="tooltip" title="" data-original-title="Google plus" data-placement="top"></i></a></li> 
+          </ul> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="col-md-3"> 
+      <div class="sidebar-box"> 
+       <h4>Follow Me</h4> 
+       <ul class="list-inline social-colored"> 
+        <li><a href="https://www.linkedin.com/in/nateyolles" target="_blank"><i class="fa logo-l icon-in" data-toggle="tooltip" title="" data-original-title="Linkedin" data-placement="top"></i></a></li> 
+        <li><a href="https://twitter.com/nateyolles" target="_blank"><i class="fa logo-t icon-twit" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top"></i></a></li> 
+        <li><a href="https://github.com/nateyolles" target="_blank"><i class="fa logo-g icon-git" data-toggle="tooltip" title="" data-original-title="GitHub" data-placement="top"></i></a></li> 
+        <li><a href="http://stackoverflow.com/users/3022863/nateyolles" target="_blank"><i class="fa logo-so icon-so" data-toggle="tooltip" title="" data-original-title="Stack Overflow" data-placement="top"></i></a></li> 
+       </ul> 
+      </div> 
+      <div class="sidebar-box"> 
+       <h4>All Blog Posts</h4> 
+       <div class="collapsible-blog-list list-group panel"> 
+        <a href="#collapsible-data-list-0" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2017 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-0"> 
+         <a href="#collapsible-data-list-0-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-0"> <i class="fa"></i> 05 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-0-0"> 
+          <a class="post list-group-item" title="Sync Crypto Keys across AEM 6.3 instances" href="/blog/2017/05/sharing-crypto-keys-in-aem-63">Sharing Crypto Keys in AEM 6.3</a> 
+          <a class="post list-group-item" title="Upgrade to the official OSGi Declarative Services (DS) Annotations from Apache Felix SCR annotations in Adobe Experience Manager (AEM)." href="/blog/2017/05/osgi-declarative-services-annotations-in-aem">Official OSGi Declarative Services Annotations in AEM</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-1" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2015 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-1"> 
+         <a href="#collapsible-data-list-1-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 09 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-0"> 
+          <a class="post list-group-item" title="Introducing the Publick Apache Sling + Sightly blog engine." href="/blog/2015/09/publick-apache-sling-sightly-blog-engine">Publick Apache Sling + Sightly blog engine</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 10 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-1"> 
+          <a class="post list-group-item" title="Programmatically read and update OSGi configurations in Adobe Experience Manager and Apache Sling using the ConfigurationAdmin service." href="/blog/2015/10/updating-osgi-configurations-in-aem-and-sling">Programmatically updating OSGi configurations in AEM and Sling</a> 
+          <a class="post list-group-item" title="Get the HTML for an AEM resource, component or page" href="/blog/2015/10/get-rendered-html-for-an-aem-resource-or-component">Get the rendered HTML for an AEM resource, component or page</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 11 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-2"> 
+          <a class="post list-group-item" title="Proper use of checkboxes in AEM components means creating semantic property types using the Sling Post Servlet." href="/blog/2015/11/aem-checkboxes-using-sling-post-servlet">AEM Checkboxes and Semantic Property Types using the Sling Post Servlet</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 12 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-3"> 
+          <a class="post list-group-item" title="Convert an AEM Page, Sling Resource, or JCR Node to JSON using the JsonItemWriter." href="/blog/2015/12/converting-aem-sling-resources-to-json">Converting AEM/Sling Resources to JSON</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-2" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2016 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-2"> 
+         <a href="#collapsible-data-list-2-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 01 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-0"> 
+          <a class="post list-group-item" title="Create a custom replication agent in Adobe Experience Manager to purge Akamai CDN cache." href="/blog/2016/01/aem-akamai-custom-replication-agent">Creating a custom Akamai replication agent in AEM</a> 
+          <a class="post list-group-item" title="Create a custom Granite UI adapter to disable the Multifield component." href="/blog/2016/01/aem-custom-granite-ui-adapter">Create a custom Granite UI adapter to disable the Multifield component</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 02 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-1"> 
+          <a class="post list-group-item" title="Custom validation in AEM Touch UI dialogs" href="/blog/2016/02/aem-touch-ui-custom-validation">AEM Touch UI Custom Validation</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 03 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-2"> 
+          <a class="post list-group-item" title="Use com.adobe.granite.confmgr.ConfMgr in AEM to set multi-tenant, ACL protected, inheritance supplied configurations." href="/blog/2016/03/aem-slash-conf-and-confmgr">AEM /conf and ConfMgr</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 06 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-3"> 
+          <a class="post list-group-item" title="Create custom HTML output for AEM clientlibs and Sightly to take advantage of HTML5 and enhance site performance." href="/blog/2016/06/custom-aem-html5-async-clientlibs">Custom AEM Clientlib Markup for HTML5</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-4" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 07 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-4"> 
+          <a class="post list-group-item" title="Use custom Granite render conditions to determine if Touch UI components should display in AEM." href="/blog/2016/07/aem-granite-custom-render-conditions">AEM Granite Custom Render Conditions</a> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="footer" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-6 col-sm-6 copyright"> 
+      <span>&copy; 2016 Nate Yolles</span> 
+     </div> 
+     <div class="col-md-6 col-sm-6 footer-nav">
+       Powered by the 
+      <a href="https://github.com/nateyolles/publick-sling-blog" target="_blank">Publick Sling + Sightly Blog Engine</a> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <a href="#" class="scrollToTop"><i class="fa fa-angle-up"></i></a> 
+  <script src="/etc/clientlibs/nateyolles/js/publick-nateyolles.min.js">
+  </script> 
+  <script src="https://www.google.com/recaptcha/api.js">
+  </script> 
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-19714698-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>  
+ </body>
+</html>

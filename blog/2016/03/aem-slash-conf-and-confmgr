@@ -1,0 +1,436 @@
+<!DOCTYPE html> 
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en"> 
+ <head> 
+  <title>AEM /conf and ConfMgr - Adobe Experience Manager | AEM/CQ | Apache Sling</title> 
+  <link href="http://www.nateyolles.com/blog/2016/03/aem-slash-conf-and-confmgr" rel="canonical" /> 
+  <link href="/etc/clientlibs/nateyolles/css/publick-nateyolles.min.css" rel="stylesheet" /> 
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600" rel="stylesheet" type="text/css" /> 
+  <meta name="msapplication-config" content="/browserconfig.xml" /> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" /> 
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" /> 
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" /> 
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" /> 
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" /> 
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" /> 
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" /> 
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" /> 
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" /> 
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-96x96.png" sizes="96x96" /> 
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" /> 
+  <link rel="manifest" href="/manifest.json" /> 
+  <meta name="description" content="Use com.adobe.granite.confmgr.ConfMgr in AEM to set multi-tenant, ACL protected, inheritance supplied configurations." /> 
+  <meta name="keywords" content="Adobe Experience Manager,AEM,CQ,conf,confmgr,resourceresolver,configuration" /> 
+  <meta name="author" content="Nate Yolles" /> 
+  <meta property="og:title" content="AEM /conf and ConfMgr - Nate Yolles - Adobe Experience Manager" /> 
+  <meta property="og:type" content="article" /> 
+  <meta property="article:published_time" content="2016-03-28" /> 
+  <meta property="article:modified_time" content="2016-03-28" /> 
+  <meta property="article:author" content="Nate Yolles" /> 
+  <meta property="article:section" content="Technology" /> 
+  <meta property="article:tag" content="Adobe Experience Manager" /> 
+  <meta property="article:tag" content="AEM" /> 
+  <meta property="article:tag" content="CQ5" /> 
+  <meta property="article:tag" content="conf" /> 
+  <meta property="article:tag" content="confmgr" /> 
+  <meta property="article:tag" content="resourceresolver" /> 
+  <meta property="article:tag" content="configuration" /> 
+  <meta property="og:url" content="http://www.nateyolles.com/blog/2016/03/aem-slash-conf-and-confmgr" /> 
+  <meta property="og:image" content="http://www.nateyolles.com/assets/images/aem-conf-confmgr.jpg" /> 
+  <meta property="og:description" content="Use com.adobe.granite.confmgr.ConfMgr in AEM to set multi-tenant, ACL protected, inheritance supplied configurations." /> 
+  <meta name="twitter:card" content="summary_large_image" /> 
+  <meta name="twitter:site" content="@nateyolles" /> 
+  <meta name="twitter:creator" content="@nateyolles" /> 
+  <meta name="twitter:title" content="AEM /conf and ConfMgr - Nate Yolles - Adobe Experience Manager" /> 
+  <meta name="twitter:description" content="Use com.adobe.granite.confmgr.ConfMgr in AEM to set multi-tenant, ACL protected, inheritance supplied configurations." /> 
+  <meta name="twitter:image" content="http://www.nateyolles.com/assets/images/aem-conf-confmgr.jpg" /> 
+  <meta charset="utf-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+ </head> 
+ <body data-spy="scroll" data-target="#navigation" data-offset="75"> 
+  <section id="navigation"> 
+   <div class="navbar navbar-default navbar-static-top sticky" role="navigation"> 
+    <div class="container"> 
+     <div class="navbar-header"> 
+      <form>
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> 
+       <a class="navbar-brand" href="/">Nate Yolles</a> 
+      </form>
+     </div> 
+     <div class="navbar-collapse collapse"> 
+      <ul class="nav navbar-nav navbar-right scrollto"> 
+       <li><a href="/#home">Home</a></li> 
+       <li><a href="/#about">About</a></li> 
+       <li><a href="/#skills">Skills</a></li> 
+       <li><a href="/#work">Work</a></li> 
+       <li><a href="/#projects">projects</a></li> 
+       <li><a href="/#contact">Contact</a></li> 
+       <li><a href="/blog">Blog</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="page-head-bg" style="background-image: url('/assets/images/aem-conf-confmgr.jpg');" class="parallax" data-stellar-background-ratio=".5"> 
+   <div class="container"> 
+    <h1><span class="post-heading">AEM /conf and ConfMgr</span></h1> 
+    <h2><span class="post-heading">Adobe Experience Manager | AEM/CQ | Apache Sling</span></h2> 
+   </div> 
+  </section> 
+  <section id="blog-post" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-9"> 
+      <div class="blog-item-sec"> 
+       <div class="blog-item-head"> 
+        <h3>AEM /conf and ConfMgr</h3> 
+       </div> 
+       <div class="blog-item-post-info"> 
+        <span class="scrollto">Nate Yolles | March 28, 2016 | <a href="#comments" class="blog-view-comments">996 comments</a> |</span> 
+       </div> 
+       <div class="blog-item-post-desc"> 
+        <div>
+         As of AEM 6.1 you may have noticed the new 
+         <code>/conf</code> node at the root level along with 
+         <code>/content</code>, 
+         <code>/etc</code>, 
+         <code>/apps</code> and 
+         <code>/libs</code>. Over time the 
+         <code>/etc</code> folder's responsibility has expanded and configurations have been moved in an effort to clean it up a little. Whereas prior to 6.1 you would have stored site configurations in 
+         <code>/etc</code>, it's now recommended that you store those configurations under 
+         <code>/conf</code>. Along with the new node structure Adobe has provided a valuable, yet simple, utility to help manage these new site configurations in 
+         <code>com.adobe.granite.confmgr.ConfMgr</code> and 
+         <code>com.adobe.granite.confmgr.Conf</code>.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         Read the Adobe provided documentation for&nbsp;
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/javadoc/com/adobe/granite/confmgr/Conf.html" target="_blank">Conf</a> and 
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/javadoc/com/adobe/granite/confmgr/ConfMgr.html" target="_blank">ConfMgr</a>.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         I have created a demo project and hosted it on GitHub at 
+         <a href="https://github.com/nateyolles/aem-slash-conf" target="_blank">https://github.com/nateyolles/aem-slash-conf</a>.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         As an example, let's host a multi-tenant AEM instance with three projects and one subproject: 
+         <span style="font-style: italic;">Aviato</span>,
+         <span style="font-style: italic;"> Pied Piper</span>, 
+         <span style="font-style: italic;">Hooli</span>&nbsp;and subproject 
+         <span style="font-style: italic;">Hooli XYZ</span>.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <pre>/content/aviato
+/content/piedpiper
+/content/hooli
+/content/hooli/hoolixyz
+</pre> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         Add a 
+         <code>cq:conf</code> property of type 
+         <code>String</code> at the root of every project page and point it to the site's corresponding configuration path. A global configuration will be used if a 
+         <code>cq:conf</code> property is not specified as is the case for 
+         <span style="font-style: italic;">Aviato</span> in this example.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <pre>/content/piedpiper/jcr:content/@cq:conf = &quot;/conf/tentants/piedpiper&quot;
+/content/hooli/jcr:content/@cq:conf = &quot;/conf/tentants/hooli&quot;
+/content/hooli/hoolixyz/jcr:content/@cq:conf = &quot;/conf/tentants/hooli/hoolixyz&quot;
+</pre> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code>Conf</code> respects relative paths as it pertains to the 
+         <code>cq:conf</code> property. Therefore, the following settings could also be used:
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <pre>/content/hooli/jcr:content/@cq:conf = &quot;/conf/tentants/hooli&quot;
+/content/hooli/hoolixyz/jcr:content/@cq:conf = &quot;hoolixyz&quot;
+</pre> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The tree structure of 
+         <code>/conf</code> should closely resemble 
+         <code>/content</code>. The configuration nodes should be of type 
+         <code>cq:Page</code> with the configuration properties on the 
+         <code>jcr:content</code> sub-nodes. All configurations start below the path specified in 
+         <code>cq:conf</code> with the addition of 
+         <code>/settings</code>.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <pre>/conf/global/settings/socialmedia/facebook/jcr:content/@enabled = false
+/conf/tenants/piedpiper/settings/socialmedia/facebook/jcr:content/@enabled = true
+/conf/tenants/hooli/settings/socialmedia/facebook/jcr:content/@enabled = true
+/conf/tenants/hooli/hoolixyz/settings/socialmedia/facebook/jcr:content/@enabled = true
+</pre> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code>/conf/global</code> is special as it provides an ultimate fallback in the 
+         <code>Conf</code> inheritance mechanism. It this example 
+         <span style="font-style: italic;">Aviato</span> does not have its own config, so it would use the global configs. 
+         <code>/conf/tenants</code> is not dictated by AEM, but is a convention worth following to help prevent namespace collision in multi-tenant scenarios.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         Configs can live under 
+         <code>/conf</code>, 
+         <code>/apps</code> and 
+         <code>/libs</code> with the same apps-then-libs type resolution that you are already familiar with. The resolution order can be set in the Felix console 
+         <code>com.adobe.granite.confmgr.impl.ConfMgrImpl</code> configuration: 
+         <a href="http://localhost:4502/system/console/configMgr/com.adobe.granite.confmgr.impl.ConfMgrImpl" target="_blank">http://localhost:4502/system/console/configMgr/com.adobe.granite.confmgr.impl.ConfMgrImpl</a>.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         Use a 
+         <code>Conf</code> object to get a site configuration. The 
+         <code>Conf</code> object is usually obtained by adapted a Resource or Page using Apache Sling's adaptTo() method. Once you have the site's 
+         <code>Conf</code> object, you can get any number of predefined ValueMaps and properties. Notice that the ValueMaps cannot be modified – they are read-only. Properties are retrieved from the ValueMap in the familiar way of passing in either a default value or the class type.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The 
+         <code>Conf</code> object you retrieve is based on the path of the resource. So if have a Sling Model or WCMUsePojo and you adapt the current page, you will get a different 
+         <code>Conf</code> than if you adapt the current resource.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="b2325a7cc90dbb02ca71" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         As you can see, the 
+         <code>ConfMgr</code> is a fairly lightweight and transparent helper. Everything is in the JCR, so configurations can be accessed through normal channels such as a Resource Resolver. However, there are three main benefits to using 
+         <code>com.adobe.granite.confmgr.Conf</code>.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The most obvious advantage is the built in inheritance management. For instance, the site for 
+         <span style="font-style: italic;">Hooli</span> might have ten configurations. If the subproject 
+         <span style="font-style: italic;">Hooli XYZ</span> overwrites only one of those configurations, it will use the other nine provided by 
+         <span style="font-style: italic;">Hooli</span>. If the 
+         <code>Conf</code> object is looking for a config that doesn't exist in the subproject or project, it will look under 
+         <code>/global</code>. 
+         <code>Conf</code> inherits and overwrites at the node level, not the property level.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code>Conf</code> handles null values for you. If the configuration, ValueMap or individual properties are null, you can continue without null checks and you won't get a Null Pointer Exception.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code>Conf</code> respects ACLs and multi-tenant privacy. If you setup your ACLs correctly, a shared component between two tenants will still only be able to access the configurations of the current tenant. 
+         <code>Conf</code> does not allow relative paths that try to move up the tree and into another tenant (i.e. &quot;../../differentSite/foo/bar&quot;).
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code>ConMgr</code> can be used as a service.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="f795100e8774cdbbf55c" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         When used as a service, a Resource Resolver can be passed in which allows the use of Sling Service Accounts, thereby respecting ACLs on the configurations.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="a400d401573380c07766" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         All inherited configurations can be obtained by using the 
+         <code>Conf#getList()</code> method, which returns a List of ValueMaps. Configurations can also be chosen explicitly by using a Resource Resolver to get the specific resource.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="1741a2e5d7125eb4bf94" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         View a complete example at 
+         <a href="https://github.com/nateyolles/aem-slash-conf" target="_blank">https://github.com/nateyolles/aem-slash-conf</a>.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         Thanks to Alex Klimetschek (
+         <a href="https://twitter.com/alexkli" target="_blank">@alexkli</a>) for sharing his knowledge of /conf of which much of this blog post is based on.
+        </div> 
+       </div> 
+       <div class="blog-more-desc"> 
+        <div class="row"> 
+         <div class="col-sm-6 col-xs-12"> 
+          <ul class="list-inline social-colored"> 
+           <li class="empty-text">Share:</li> 
+           <li><a href="#"><i class="fa logo-l icon-in share" data-toggle="tooltip" title="" data-original-title="LinkedIn" data-placement="top" data-url="http://www.nateyolles.com/blog/2016/03/aem-slash-conf-and-confmgr" data-title="AEM /conf and ConfMgr" data-summary="Use com.adobe.granite.confmgr.ConfMgr in AEM to set multi-tenant, ACL protected, inheritance supplied configurations." data-source="nateyolles.com"></i></a></li> 
+           <li><a href="#"><i class="fa logo-t icon-twit share" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top" data-text="AEM /conf and ConfMgr" data-via="nateyolles" data-url="http://www.nateyolles.com/blog/2016/03/aem-slash-conf-and-confmgr"></i></a></li> 
+           <li><a href="#"><i class="fa logo-f icon-f share" data-toggle="tooltip" title="" data-original-title="Facebook" data-placement="top"></i></a></li> 
+           <li><a href="#"><i class="fa logo-p icon-plus share" data-url="http://www.nateyolles.com/blog/2016/03/aem-slash-conf-and-confmgr" data-toggle="tooltip" title="" data-original-title="Google plus" data-placement="top"></i></a></li> 
+          </ul> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="col-md-3"> 
+      <div class="sidebar-box"> 
+       <h4>Follow Me</h4> 
+       <ul class="list-inline social-colored"> 
+        <li><a href="https://www.linkedin.com/in/nateyolles" target="_blank"><i class="fa logo-l icon-in" data-toggle="tooltip" title="" data-original-title="Linkedin" data-placement="top"></i></a></li> 
+        <li><a href="https://twitter.com/nateyolles" target="_blank"><i class="fa logo-t icon-twit" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top"></i></a></li> 
+        <li><a href="https://github.com/nateyolles" target="_blank"><i class="fa logo-g icon-git" data-toggle="tooltip" title="" data-original-title="GitHub" data-placement="top"></i></a></li> 
+        <li><a href="http://stackoverflow.com/users/3022863/nateyolles" target="_blank"><i class="fa logo-so icon-so" data-toggle="tooltip" title="" data-original-title="Stack Overflow" data-placement="top"></i></a></li> 
+       </ul> 
+      </div> 
+      <div class="sidebar-box"> 
+       <h4>All Blog Posts</h4> 
+       <div class="collapsible-blog-list list-group panel"> 
+        <a href="#collapsible-data-list-0" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2017 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-0"> 
+         <a href="#collapsible-data-list-0-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-0"> <i class="fa"></i> 05 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-0-0"> 
+          <a class="post list-group-item" title="Sync Crypto Keys across AEM 6.3 instances" href="/blog/2017/05/sharing-crypto-keys-in-aem-63">Sharing Crypto Keys in AEM 6.3</a> 
+          <a class="post list-group-item" title="Upgrade to the official OSGi Declarative Services (DS) Annotations from Apache Felix SCR annotations in Adobe Experience Manager (AEM)." href="/blog/2017/05/osgi-declarative-services-annotations-in-aem">Official OSGi Declarative Services Annotations in AEM</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-1" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2015 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-1"> 
+         <a href="#collapsible-data-list-1-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 09 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-0"> 
+          <a class="post list-group-item" title="Introducing the Publick Apache Sling + Sightly blog engine." href="/blog/2015/09/publick-apache-sling-sightly-blog-engine">Publick Apache Sling + Sightly blog engine</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 10 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-1"> 
+          <a class="post list-group-item" title="Programmatically read and update OSGi configurations in Adobe Experience Manager and Apache Sling using the ConfigurationAdmin service." href="/blog/2015/10/updating-osgi-configurations-in-aem-and-sling">Programmatically updating OSGi configurations in AEM and Sling</a> 
+          <a class="post list-group-item" title="Get the HTML for an AEM resource, component or page" href="/blog/2015/10/get-rendered-html-for-an-aem-resource-or-component">Get the rendered HTML for an AEM resource, component or page</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 11 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-2"> 
+          <a class="post list-group-item" title="Proper use of checkboxes in AEM components means creating semantic property types using the Sling Post Servlet." href="/blog/2015/11/aem-checkboxes-using-sling-post-servlet">AEM Checkboxes and Semantic Property Types using the Sling Post Servlet</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 12 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-3"> 
+          <a class="post list-group-item" title="Convert an AEM Page, Sling Resource, or JCR Node to JSON using the JsonItemWriter." href="/blog/2015/12/converting-aem-sling-resources-to-json">Converting AEM/Sling Resources to JSON</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-2" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2016 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-2"> 
+         <a href="#collapsible-data-list-2-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 01 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-0"> 
+          <a class="post list-group-item" title="Create a custom replication agent in Adobe Experience Manager to purge Akamai CDN cache." href="/blog/2016/01/aem-akamai-custom-replication-agent">Creating a custom Akamai replication agent in AEM</a> 
+          <a class="post list-group-item" title="Create a custom Granite UI adapter to disable the Multifield component." href="/blog/2016/01/aem-custom-granite-ui-adapter">Create a custom Granite UI adapter to disable the Multifield component</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 02 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-1"> 
+          <a class="post list-group-item" title="Custom validation in AEM Touch UI dialogs" href="/blog/2016/02/aem-touch-ui-custom-validation">AEM Touch UI Custom Validation</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 03 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-2"> 
+          <a class="post list-group-item" title="Use com.adobe.granite.confmgr.ConfMgr in AEM to set multi-tenant, ACL protected, inheritance supplied configurations." href="/blog/2016/03/aem-slash-conf-and-confmgr">AEM /conf and ConfMgr</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 06 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-3"> 
+          <a class="post list-group-item" title="Create custom HTML output for AEM clientlibs and Sightly to take advantage of HTML5 and enhance site performance." href="/blog/2016/06/custom-aem-html5-async-clientlibs">Custom AEM Clientlib Markup for HTML5</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-4" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 07 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-4"> 
+          <a class="post list-group-item" title="Use custom Granite render conditions to determine if Touch UI components should display in AEM." href="/blog/2016/07/aem-granite-custom-render-conditions">AEM Granite Custom Render Conditions</a> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="footer" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-6 col-sm-6 copyright"> 
+      <span>&copy; 2016 Nate Yolles</span> 
+     </div> 
+     <div class="col-md-6 col-sm-6 footer-nav">
+       Powered by the 
+      <a href="https://github.com/nateyolles/publick-sling-blog" target="_blank">Publick Sling + Sightly Blog Engine</a> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <a href="#" class="scrollToTop"><i class="fa fa-angle-up"></i></a> 
+  <script src="/etc/clientlibs/nateyolles/js/publick-nateyolles.min.js">
+  </script> 
+  <script src="https://www.google.com/recaptcha/api.js">
+  </script> 
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-19714698-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>  
+ </body>
+</html>

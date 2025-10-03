@@ -1,0 +1,356 @@
+<!DOCTYPE html> 
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en"> 
+ <head> 
+  <title>AEM Granite Custom Render Conditions - Adobe Experience Manager | AEM/CQ | Apache Sling</title> 
+  <link href="http://www.nateyolles.com/blog/2016/07/aem-granite-custom-render-conditions" rel="canonical" /> 
+  <link href="/etc/clientlibs/nateyolles/css/publick-nateyolles.min.css" rel="stylesheet" /> 
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600" rel="stylesheet" type="text/css" /> 
+  <meta name="msapplication-config" content="/browserconfig.xml" /> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" /> 
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" /> 
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" /> 
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" /> 
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" /> 
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" /> 
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" /> 
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" /> 
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" /> 
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-96x96.png" sizes="96x96" /> 
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" /> 
+  <link rel="manifest" href="/manifest.json" /> 
+  <meta name="description" content="Use custom Granite render conditions to determine if Touch UI components should display in AEM." /> 
+  <meta name="keywords" content="Adobe Experience Manager,AEM,CQ,granite,touch ui,dialog,rendercondition,jsp,expression language" /> 
+  <meta name="author" content="Nate Yolles" /> 
+  <meta property="og:title" content="AEM Granite Custom Render Conditions - Nate Yolles - Adobe Experience Manager" /> 
+  <meta property="og:type" content="article" /> 
+  <meta property="article:published_time" content="2016-07-13" /> 
+  <meta property="article:modified_time" content="2016-07-13" /> 
+  <meta property="article:author" content="Nate Yolles" /> 
+  <meta property="article:section" content="Technology" /> 
+  <meta property="article:tag" content="Adobe Experience Manager" /> 
+  <meta property="article:tag" content="AEM" /> 
+  <meta property="article:tag" content="CQ5" /> 
+  <meta property="article:tag" content="granite" /> 
+  <meta property="article:tag" content="touch ui" /> 
+  <meta property="article:tag" content="dialog" /> 
+  <meta property="article:tag" content="rendercondition" /> 
+  <meta property="article:tag" content="jsp" /> 
+  <meta property="article:tag" content="expression language" /> 
+  <meta property="og:url" content="http://www.nateyolles.com/blog/2016/07/aem-granite-custom-render-conditions" /> 
+  <meta property="og:image" content="http://www.nateyolles.com/assets/images/aem-granite-render-condition.png" /> 
+  <meta property="og:description" content="Use custom Granite render conditions to determine if Touch UI components should display in AEM." /> 
+  <meta name="twitter:card" content="summary_large_image" /> 
+  <meta name="twitter:site" content="@nateyolles" /> 
+  <meta name="twitter:creator" content="@nateyolles" /> 
+  <meta name="twitter:title" content="AEM Granite Custom Render Conditions - Nate Yolles - Adobe Experience Manager" /> 
+  <meta name="twitter:description" content="Use custom Granite render conditions to determine if Touch UI components should display in AEM." /> 
+  <meta name="twitter:image" content="http://www.nateyolles.com/assets/images/aem-granite-render-condition.png" /> 
+  <meta charset="utf-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+ </head> 
+ <body data-spy="scroll" data-target="#navigation" data-offset="75"> 
+  <section id="navigation"> 
+   <div class="navbar navbar-default navbar-static-top sticky" role="navigation"> 
+    <div class="container"> 
+     <div class="navbar-header"> 
+      <form>
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> 
+       <a class="navbar-brand" href="/">Nate Yolles</a> 
+      </form>
+     </div> 
+     <div class="navbar-collapse collapse"> 
+      <ul class="nav navbar-nav navbar-right scrollto"> 
+       <li><a href="/#home">Home</a></li> 
+       <li><a href="/#about">About</a></li> 
+       <li><a href="/#skills">Skills</a></li> 
+       <li><a href="/#work">Work</a></li> 
+       <li><a href="/#projects">projects</a></li> 
+       <li><a href="/#contact">Contact</a></li> 
+       <li><a href="/blog">Blog</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="page-head-bg" style="background-image: url('/assets/images/aem-granite-render-condition.png');" class="parallax" data-stellar-background-ratio=".5"> 
+   <div class="container"> 
+    <h1><span class="post-heading">AEM Granite Custom Render Conditions</span></h1> 
+    <h2><span class="post-heading">Adobe Experience Manager | AEM/CQ | Apache Sling</span></h2> 
+   </div> 
+  </section> 
+  <section id="blog-post" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-9"> 
+      <div class="blog-item-sec"> 
+       <div class="blog-item-head"> 
+        <h3>AEM Granite Custom Render Conditions</h3> 
+       </div> 
+       <div class="blog-item-post-info"> 
+        <span class="scrollto">Nate Yolles | July 13, 2016 | <a href="#comments" class="blog-view-comments">994 comments</a> |</span> 
+       </div> 
+       <div class="blog-item-post-desc"> 
+        <div>
+         Granite render conditions can be used to determine whether a component should be rendered or not. From the 
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/granite-ui/api/jcr_root/libs/granite/ui/components/foundation/renderconditions/index.html" target="_blank">Render Condition documentation</a>, a &quot;typical example would be to render a submit button based on whether the current user has a privilege to create or modify a resource.&quot; Render conditions can be used to help guide the author by dynamically customizing forms based on known information.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         Download the sample project on GitHub at 
+         <a href="https://github.com/nateyolles/aem-granite-rendercondition-demo" target="_blank">https://github.com/nateyolles/aem-granite-rendercondition-demo</a> which includes various examples of utilizing the built-in render conditions as well as examples on how to create your own custom render conditions, how to pass in data to those render conditions and how to evaluate Expression Language with your custom render conditions.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <img src="/content/assets/images/granite-render-condition-form.png" class="img-responsive" alt="Screenshot of an AEM admin form using Granite render conditions" />
+        </div> 
+        <div>
+         There are many examples of render conditions throughout AEM and an easy way to start exploring is to query for the most basic render conditions from within CRXDE Lite using something like&nbsp;
+         <code style="font-size: 12.6px;">/jcr:root//*[@sling:resourceType='granite/ui/components/foundation/renderconditions/simple']</code>. You can find the standard render conditions such as&nbsp;
+         <code style="font-size: 12.6px;">simple</code>,&nbsp;
+         <code style="font-size: 12.6px;">and</code>,&nbsp;
+         <code style="font-size: 12.6px;">or</code>,&nbsp;
+         <code style="font-size: 12.6px;">not</code>&nbsp;and&nbsp;
+         <code style="font-size: 12.6px;">privilege</code>&nbsp;under&nbsp;
+         <code style="font-size: 12.6px;">/libs/granite/ui/components/foundation/renderconditions</code>. There are a few custom render conditions under&nbsp;
+         <code style="font-size: 12.6px;">/libs/cq/gui/components/projects/admin/renderconditions</code>&nbsp;which you can explore, as well as&nbsp;
+         <code style="font-size: 12.6px;">/libs/cq/gui/components/renderconditions/islocked</code>,&nbsp;
+         <code style="font-size: 12.6px;">/libs/wcm/msm/components/touch-ui/renderconditions/isblueprint</code>&nbsp;and&nbsp;
+         <code style="font-size: 12.6px;">/libs/wcm/msm/components/touch-ui/renderconditions/islivecopy</code>. There is another great example of a custom render condition in the&nbsp;
+         <a href="https://github.com/Adobe-Consulting-Services/acs-aem-commons/blob/master/content/src/main/content/jcr_root/apps/acs-commons/granite/ui/components/renderconditions/path/path.jsp" target="_blank" style="background-color: rgb(255,255,255);">ACS AEM Commons</a>&nbsp;project which displays components based on the current path.
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         To utilize this server-side display logic, simply create a node under your Granite widget named 
+         <code>granite:rendercondition</code>, set the 
+         <code>sling:resourceType</code> to the render condition component such as 
+         <code>granite/ui/components/foundation/renderconditions/simple</code> and populate the required properties such as 
+         <code>expression</code>. For example, the following textfield will only render when the query string parameter 
+         <code>biz</code> equals 
+         <code>baz</code>.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="2b97c0d65401db8ac460a6a2961d2d9e" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <span style="line-height: 1.42857;"><br /></span>
+        </div> 
+        <div>
+         <span style="line-height: 1.42857;">Granite render conditions take advantage of JSP <a href="https://docs.oracle.com/javaee/7/tutorial/jsf-el.htm" target="_blank">Expression Language</a>&nbsp;or <code>EL</code> for short. As such, you have access to <code>param</code>, <code>paramValues</code>, <code>header</code>, <code>headerValues</code>, <code>cookie</code>, <code>requestPathInfo</code>, <code>state</code> and <code>tenant</code>. You also have access to a powerful, yet simple and straight-forward syntax to evaluate logic in Expression Language. Furthermore, Granite provides extra convenience with a few provided EL Functions. For example:</span>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="d1ceff0baa61239474d38e790d1330b8" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         See the 
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/granite-ui/api/jcr_root/libs/granite/ui/components/foundation/el.html" target="_blank">Granite UI Documentation on Expression Language</a> for more information regarding available variables and functions. Note that EL expressions can be used outside of render conditions as well. For example, you'll find them 
+         <code>granite/ui/components/foundation/hyperlink</code> components to pass data forward, such as:
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="e80c476d1274efce1a06fc93edaab594" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The 
+         <code>simple</code> render conditions are quick and readily available for most basic expressions. However, if you need custom logic, you can write your own render condition. A render condition is simply a JSP component. Within your custom logic you will get the 
+         <code>granite:rendercondition</code> resource, retrieve its relevant properties via the resource's 
+         <a href="https://docs.adobe.com/docs/en/aem/6-2/develop/ref/javadoc/com/adobe/granite/ui/components/Config.html" target="_blank">Config</a> and set a true or false&nbsp;
+         <span style="line-height: 1.42857;"><a href="https://docs.adobe.com/docs/en/aem/6-2/develop/ref/javadoc/com/adobe/granite/ui/components/rendercondition/SimpleRenderCondition.html" target="_blank">SimpleRenderCondition</a> as a request attribute. To evaluate EL expressions, use the </span>
+         <a href="https://docs.adobe.com/docs/en/aem/6-2/develop/ref/javadoc/com/adobe/granite/ui/components/ExpressionHelper.html" target="_blank" style="line-height: 1.42857;background-color: rgb(255,255,255);">ExpressionHelper</a>
+         <span style="line-height: 1.42857;"> by way of the </span>
+         <a href="https://docs.adobe.com/docs/en/aem/6-2/develop/ref/javadoc/com/adobe/granite/ui/components/" target="_blank" style="line-height: 1.42857;background-color: rgb(255,255,255);">ExpressionResolver service</a>,
+         <span style="line-height: 1.42857;"> which is powered by the </span>
+         <a href="https://commons.apache.org/proper/commons-el/" target="_blank" style="line-height: 1.42857;background-color: rgb(255,255,255);">Apache Commons EL</a>
+         <span style="line-height: 1.42857;"> interpreter. The combination of a custom render condition and EL expressions is very powerful.</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="6c66a02ea7a0682aa6642831dc0a4e0c" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The custom render condition is used the same way the default render conditions are utilized, simply update the 
+         <code>sling:resourceType</code> to the path of your custom render condition component and populate your defined resource properties.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="202eabe1a839b9840a9c2ac167d372bb" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         When you download the sample project at 
+         <a href="https://github.com/nateyolles/aem-granite-rendercondition-demo" target="_blank">https://github.com/nateyolles/aem-granite-rendercondition-demo</a>, you'll&nbsp;notice that the most straight-forward condition is the 
+         <code>simple</code> render condition and that you can combine conditions by nesting 
+         <code>and</code>, 
+         <code>or</code> and 
+         <code>not</code> conditions. This snippet from the demo project reveals a variety of ways to dynamically render Touch UI components including cookies, headers, query string parameters, selectors, suffixes, JCR privileges and custom render conditions.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="eec2f56acc7153fe9fb7dd6637e8f7ad" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         You'll notice in the provided sample project that I created a custom Touch UI admin page to help demonstrate the various ways of using the Expression Language to interact with the URL. (If you're interested in how to do that, see Chris Millar's post on 
+         <a href="http://experiencemanaged.com/posts/how-to-create-an-aem-62-admin-console-for-touch-ui.html" target="_blank">How to create an AEM 6.2 Admin Console for Touch UI</a>.) Take note that render conditions work with any Granite widget, however, in specific scenarios, certain challenges exist when trying to use render conditions with component dialogs in your typical Touch UI editing of pages. Remember that an AJAX call is made to open the dialog and the EL expressions are evaluated on 
+         <span style="font-style: italic;">that</span> AJAX request, not the request for the page which is in fact 
+         <code>/editor.html</code>. Therefore, the path, suffix, selectors and query string parameters are independent of what you see in your browser's address bar when using a normal component dialog in the editor.
+        </div> 
+       </div> 
+       <div class="blog-more-desc"> 
+        <div class="row"> 
+         <div class="col-sm-6 col-xs-12"> 
+          <ul class="list-inline social-colored"> 
+           <li class="empty-text">Share:</li> 
+           <li><a href="#"><i class="fa logo-l icon-in share" data-toggle="tooltip" title="" data-original-title="LinkedIn" data-placement="top" data-url="http://www.nateyolles.com/blog/2016/07/aem-granite-custom-render-conditions" data-title="AEM Granite Custom Render Conditions" data-summary="Use custom Granite render conditions to determine if Touch UI components should display in AEM." data-source="nateyolles.com"></i></a></li> 
+           <li><a href="#"><i class="fa logo-t icon-twit share" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top" data-text="AEM Granite Custom Render Conditions" data-via="nateyolles" data-url="http://www.nateyolles.com/blog/2016/07/aem-granite-custom-render-conditions"></i></a></li> 
+           <li><a href="#"><i class="fa logo-f icon-f share" data-toggle="tooltip" title="" data-original-title="Facebook" data-placement="top"></i></a></li> 
+           <li><a href="#"><i class="fa logo-p icon-plus share" data-url="http://www.nateyolles.com/blog/2016/07/aem-granite-custom-render-conditions" data-toggle="tooltip" title="" data-original-title="Google plus" data-placement="top"></i></a></li> 
+          </ul> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="col-md-3"> 
+      <div class="sidebar-box"> 
+       <h4>Follow Me</h4> 
+       <ul class="list-inline social-colored"> 
+        <li><a href="https://www.linkedin.com/in/nateyolles" target="_blank"><i class="fa logo-l icon-in" data-toggle="tooltip" title="" data-original-title="Linkedin" data-placement="top"></i></a></li> 
+        <li><a href="https://twitter.com/nateyolles" target="_blank"><i class="fa logo-t icon-twit" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top"></i></a></li> 
+        <li><a href="https://github.com/nateyolles" target="_blank"><i class="fa logo-g icon-git" data-toggle="tooltip" title="" data-original-title="GitHub" data-placement="top"></i></a></li> 
+        <li><a href="http://stackoverflow.com/users/3022863/nateyolles" target="_blank"><i class="fa logo-so icon-so" data-toggle="tooltip" title="" data-original-title="Stack Overflow" data-placement="top"></i></a></li> 
+       </ul> 
+      </div> 
+      <div class="sidebar-box"> 
+       <h4>All Blog Posts</h4> 
+       <div class="collapsible-blog-list list-group panel"> 
+        <a href="#collapsible-data-list-0" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2017 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-0"> 
+         <a href="#collapsible-data-list-0-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-0"> <i class="fa"></i> 05 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-0-0"> 
+          <a class="post list-group-item" title="Sync Crypto Keys across AEM 6.3 instances" href="/blog/2017/05/sharing-crypto-keys-in-aem-63">Sharing Crypto Keys in AEM 6.3</a> 
+          <a class="post list-group-item" title="Upgrade to the official OSGi Declarative Services (DS) Annotations from Apache Felix SCR annotations in Adobe Experience Manager (AEM)." href="/blog/2017/05/osgi-declarative-services-annotations-in-aem">Official OSGi Declarative Services Annotations in AEM</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-1" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2015 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-1"> 
+         <a href="#collapsible-data-list-1-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 09 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-0"> 
+          <a class="post list-group-item" title="Introducing the Publick Apache Sling + Sightly blog engine." href="/blog/2015/09/publick-apache-sling-sightly-blog-engine">Publick Apache Sling + Sightly blog engine</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 10 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-1"> 
+          <a class="post list-group-item" title="Programmatically read and update OSGi configurations in Adobe Experience Manager and Apache Sling using the ConfigurationAdmin service." href="/blog/2015/10/updating-osgi-configurations-in-aem-and-sling">Programmatically updating OSGi configurations in AEM and Sling</a> 
+          <a class="post list-group-item" title="Get the HTML for an AEM resource, component or page" href="/blog/2015/10/get-rendered-html-for-an-aem-resource-or-component">Get the rendered HTML for an AEM resource, component or page</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 11 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-2"> 
+          <a class="post list-group-item" title="Proper use of checkboxes in AEM components means creating semantic property types using the Sling Post Servlet." href="/blog/2015/11/aem-checkboxes-using-sling-post-servlet">AEM Checkboxes and Semantic Property Types using the Sling Post Servlet</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 12 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-3"> 
+          <a class="post list-group-item" title="Convert an AEM Page, Sling Resource, or JCR Node to JSON using the JsonItemWriter." href="/blog/2015/12/converting-aem-sling-resources-to-json">Converting AEM/Sling Resources to JSON</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-2" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2016 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-2"> 
+         <a href="#collapsible-data-list-2-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 01 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-0"> 
+          <a class="post list-group-item" title="Create a custom replication agent in Adobe Experience Manager to purge Akamai CDN cache." href="/blog/2016/01/aem-akamai-custom-replication-agent">Creating a custom Akamai replication agent in AEM</a> 
+          <a class="post list-group-item" title="Create a custom Granite UI adapter to disable the Multifield component." href="/blog/2016/01/aem-custom-granite-ui-adapter">Create a custom Granite UI adapter to disable the Multifield component</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 02 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-1"> 
+          <a class="post list-group-item" title="Custom validation in AEM Touch UI dialogs" href="/blog/2016/02/aem-touch-ui-custom-validation">AEM Touch UI Custom Validation</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 03 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-2"> 
+          <a class="post list-group-item" title="Use com.adobe.granite.confmgr.ConfMgr in AEM to set multi-tenant, ACL protected, inheritance supplied configurations." href="/blog/2016/03/aem-slash-conf-and-confmgr">AEM /conf and ConfMgr</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 06 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-3"> 
+          <a class="post list-group-item" title="Create custom HTML output for AEM clientlibs and Sightly to take advantage of HTML5 and enhance site performance." href="/blog/2016/06/custom-aem-html5-async-clientlibs">Custom AEM Clientlib Markup for HTML5</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-4" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 07 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-4"> 
+          <a class="post list-group-item" title="Use custom Granite render conditions to determine if Touch UI components should display in AEM." href="/blog/2016/07/aem-granite-custom-render-conditions">AEM Granite Custom Render Conditions</a> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="footer" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-6 col-sm-6 copyright"> 
+      <span>&copy; 2016 Nate Yolles</span> 
+     </div> 
+     <div class="col-md-6 col-sm-6 footer-nav">
+       Powered by the 
+      <a href="https://github.com/nateyolles/publick-sling-blog" target="_blank">Publick Sling + Sightly Blog Engine</a> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <a href="#" class="scrollToTop"><i class="fa fa-angle-up"></i></a> 
+  <script src="/etc/clientlibs/nateyolles/js/publick-nateyolles.min.js">
+  </script> 
+  <script src="https://www.google.com/recaptcha/api.js">
+  </script> 
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-19714698-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>  
+ </body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html> 
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en"> 
+ <head> 
+  <title>AEM Checkboxes and Semantic Property Types using the Sling Post Servlet - Adobe Experience Manager | AEM/CQ | Apache Sling</title> 
+  <link href="http://www.nateyolles.com/blog/2015/11/aem-checkboxes-using-sling-post-servlet" rel="canonical" /> 
+  <link href="/etc/clientlibs/nateyolles/css/publick-nateyolles.min.css" rel="stylesheet" /> 
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600" rel="stylesheet" type="text/css" /> 
+  <meta name="msapplication-config" content="/browserconfig.xml" /> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" /> 
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" /> 
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" /> 
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" /> 
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" /> 
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" /> 
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" /> 
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" /> 
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" /> 
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-96x96.png" sizes="96x96" /> 
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" /> 
+  <link rel="manifest" href="/manifest.json" /> 
+  <meta name="description" content="Proper use of checkboxes in AEM components means creating semantic property types using the Sling Post Servlet." /> 
+  <meta name="keywords" content="Adobe Experience Manager,AEM,CQ,checkbox,SlingPostServlet,component" /> 
+  <meta name="author" content="Nate Yolles" /> 
+  <meta property="og:title" content="AEM Checkboxes and Semantic Property Types using the Sling Post Servlet - Nate Yolles - Adobe Experience Manager" /> 
+  <meta property="og:type" content="article" /> 
+  <meta property="article:published_time" content="2015-11-16" /> 
+  <meta property="article:modified_time" content="2015-11-16" /> 
+  <meta property="article:author" content="Nate Yolles" /> 
+  <meta property="article:section" content="Technology" /> 
+  <meta property="article:tag" content="Adobe Experience Manager" /> 
+  <meta property="article:tag" content="AEM" /> 
+  <meta property="article:tag" content="CQ5" /> 
+  <meta property="article:tag" content="checkbox" /> 
+  <meta property="article:tag" content="SlingPostServlet" /> 
+  <meta property="article:tag" content="component" /> 
+  <meta property="og:url" content="http://www.nateyolles.com/blog/2015/11/aem-checkboxes-using-sling-post-servlet" /> 
+  <meta property="og:image" content="http://www.nateyolles.com/assets/images/aem-checkboxes-sling-post-servlet.jpg" /> 
+  <meta property="og:description" content="Proper use of checkboxes in AEM components means creating semantic property types using the Sling Post Servlet." /> 
+  <meta name="twitter:card" content="summary_large_image" /> 
+  <meta name="twitter:site" content="@nateyolles" /> 
+  <meta name="twitter:creator" content="@nateyolles" /> 
+  <meta name="twitter:title" content="AEM Checkboxes and Semantic Property Types using the Sling Post Servlet - Nate Yolles - Adobe Experience Manager" /> 
+  <meta name="twitter:description" content="Proper use of checkboxes in AEM components means creating semantic property types using the Sling Post Servlet." /> 
+  <meta name="twitter:image" content="http://www.nateyolles.com/assets/images/aem-checkboxes-sling-post-servlet.jpg" /> 
+  <meta charset="utf-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+ </head> 
+ <body data-spy="scroll" data-target="#navigation" data-offset="75"> 
+  <section id="navigation"> 
+   <div class="navbar navbar-default navbar-static-top sticky" role="navigation"> 
+    <div class="container"> 
+     <div class="navbar-header"> 
+      <form>
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> 
+       <a class="navbar-brand" href="/">Nate Yolles</a> 
+      </form>
+     </div> 
+     <div class="navbar-collapse collapse"> 
+      <ul class="nav navbar-nav navbar-right scrollto"> 
+       <li><a href="/#home">Home</a></li> 
+       <li><a href="/#about">About</a></li> 
+       <li><a href="/#skills">Skills</a></li> 
+       <li><a href="/#work">Work</a></li> 
+       <li><a href="/#projects">projects</a></li> 
+       <li><a href="/#contact">Contact</a></li> 
+       <li><a href="/blog">Blog</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="page-head-bg" style="background-image: url('/assets/images/aem-checkboxes-sling-post-servlet.jpg');" class="parallax" data-stellar-background-ratio=".5"> 
+   <div class="container"> 
+    <h1><span class="post-heading">AEM Checkboxes and Semantic Property Types using the Sling Post Servlet</span></h1> 
+    <h2><span class="post-heading">Adobe Experience Manager | AEM/CQ | Apache Sling</span></h2> 
+   </div> 
+  </section> 
+  <section id="blog-post" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-9"> 
+      <div class="blog-item-sec"> 
+       <div class="blog-item-head"> 
+        <h3>AEM Checkboxes and Semantic Property Types using the Sling Post Servlet</h3> 
+       </div> 
+       <div class="blog-item-post-info"> 
+        <span class="scrollto">Nate Yolles | November 16, 2015 | <a href="#comments" class="blog-view-comments">997 comments</a> |</span> 
+       </div> 
+       <div class="blog-item-post-desc"> 
+        <div>
+         Using checkboxes in your Adobe Experience Manager component dialogs can be confusing to the new component developer. A few quick examples will reveal just how easy they really are. However, this article is meant to be more than a back-to-basics. We'll discuss best practices and take the opportunity to introduce the Sling Post Servlet. This is where many web developers and engineers have a breakthrough and recognize AEM for what it is - a powerful set of features and APIs, but at its core, it's simply an Apache Sling application.
+        </div> 
+        <div>
+         <span style="line-height: 1.42857;"><br /></span>
+        </div> 
+        <div>
+         <span style="line-height: 1.42857;">Before diving into AEM's use of checkboxes, it's important to know the basics of how checkboxes are handled in ordinary HTML. Reading into the </span>
+         <a href="http://www.w3.org/TR/html5/" target="_blank" style="line-height: 1.42857;background-color: rgb(255,255,255);">HTML5 specification</a>
+         <span style="line-height: 1.42857;">, we find two important rules regarding checkboxes:</span>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <ol> 
+         <li>&quot;If the field element has a value attribute specified, then let value be the value of that attribute; otherwise, let value be the string 'on'.&quot; (See: <a href="http://www.w3.org/TR/html5/forms.html#dom-input-value-default-on" target="_blank">4.10.5.4 Common input element APIs, default/on</a>)<br /></li> 
+         <li>&quot;When a form is submitted, only 'on' checkbox controls can become successful.&quot; (See: <a href="http://www.w3.org/TR/html5/forms.html#constructing-form-data-set" target="_blank">4.10.22.4 Constructing the form data set</a>)</li> 
+        </ol> 
+        <div>
+         The first bullet point simply means that the default value of a checkbox is the string literal &quot;on&quot; if a value attribute is not defined on the element. The second bullet point has much greater ramifications and will lead us into the topic of the Sling Post Servlet. The HTML specification states that while a checkbox in the on state is submitted with the default/on value, a checkbox in the off state is not submitted at all. The result is that the server will not receive a &quot;false&quot;, null or &quot;off&quot; value for an unchecked checkbox, but rather will not receive either the name or a value in the form post.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The real power to control checkboxes in AEM is provided from the 
+         <a href="https://sling.apache.org/documentation/bundles/manipulating-content-the-slingpostservlet-servlets-post.html" target="_blank">Sling Post Servlet</a>. Sling provides nine suffixes, four of which we will concentrate on in this article. A suffix is used by submitting an additional request parameter with the parameter name appended with an &quot;@&quot; symbol and the suffix. For example, if you want to act on the &quot;foo&quot; parameter, you would submit &quot;foo@SuffixName&quot; in addition to the &quot;foo&quot; parameter.
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">Saving checkbox values as Boolean value types in the JCR</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         When posted to Sling and saved to the JCR, the default property type is String. While this is workable, wouldn't you rather have a Boolean value saved as a Boolean property type? When working in the strongly typed Java language you would use the boolean primitive or Boolean wrapper rather than a String literal to represent a Boolean value, so why not do the same in the JCR? You can use the Sling Post Servlet's 
+         <a href="https://sling.apache.org/documentation/bundles/manipulating-content-the-slingpostservlet-servlets-post.html#typehint" target="_blank">TypeHint</a> suffix to instruct Sling to set the property type as a Boolean (or other valid value type for that matter).
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">Removing checkbox values in the off state</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         In accordance with the HTML specification and as we previously discussed, an unchecked checkbox is not submitted. AEM takes care of this task for us when using the out-of-the-box Classic and Touch UI checkbox or selection controls. However, if you create something custom such as dynamically added checkboxes or checkboxgroups in your dialog, you might find that Sling and thus AEM is never notified when the author unchecks a checkbox. If you were unfamiliar with the Sling Post Servlet, you might end up writing a lot of JavaScript logic using listeners and the CQ Widget API's events. The better alternative is to use the Sling Post Servlet's 
+         <a href="https://sling.apache.org/documentation/bundles/manipulating-content-the-slingpostservlet-servlets-post.html#delete" target="_blank">Delete</a> suffix. The 
+         <span style="font-style: italic;">Delete</span> suffix instructs Sling to always delete the JCR property before taking action with the request parameters. If the checkbox is unchecked, the JCR property is deleted and since a value wasn't submitted, no property is created in its place. If the checkbox is checked, the JCR property is deleted and simply recreated with the new value, whether the value is the same as before or otherwise.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">Setting checkbox values in the off state</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The 
+         <a href="https://sling.apache.org/documentation/bundles/manipulating-content-the-slingpostservlet-servlets-post.html#defaultvalue" target="_blank">DefaultValue</a> suffix instructs Sling to use a given default value should the request parameter not have a value. This alone isn't helpful in the case of an unchecked checkbox because neither the name nor value will be submitted. However, the 
+         <span style="font-style: italic;">DefaultValue</span> will be considered when used in addition to the 
+         <a href="https://sling.apache.org/documentation/bundles/manipulating-content-the-slingpostservlet-servlets-post.html#usedefaultwhenmissing" target="_blank">UseDefaultWhenMissing</a> suffix because just as the suffix states, the value of an unchecked checkbox will be &quot;missing&quot; so the default value is used.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">Tying it all together</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         So while you can use the 
+         <span style="font-style: italic;">Delete</span> suffix to completely remove a JCR property, you can use the 
+         <span style="font-style: italic;">DefaultValue</span> and 
+         <span style="font-style: italic;">UseDefaultWhenMissing</span> in conjunction to guarantee that a JCR property will always be present with a value. In fact, by combining the 
+         <span style="font-style: italic;">TypeHint</span>, 
+         <span style="font-style: italic;">DefaultValue</span> and 
+         <span style="font-style: italic;">UseDefaultWhenMissing</span> suffixes, you can ensure a semantically correct Boolean JCR property type is always created with a proper value of true or false.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">cURL simulations</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         Run the following cURL commands against a running AEM/CQ instance and observe the JCR property values as well as the JCR property type.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="90ed86ca221c2b39310a" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">AEM/CQ component dialogs</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         The most common checkbox control in the Classic UI is the 
+         <a href="https://docs.adobe.com/docs/en/cq/5-6-1/widgets-api/index.html?class=CQ.form.Selection" target="_blank">CQ.form.Selection</a> xtype with its type set to 
+         <span style="font-style: italic;">checkbox</span>. By default the Selection/Checkbox control will save the JCR property as the String literal &quot;true.&quot; You can use the 
+         <span style="font-style: italic;">TypeHint</span> suffix to save the String value as a true Boolean by either setting the 
+         <span style="font-style: italic;">checkboxBoolTypeHint</span> config option or by creating a 
+         <a href="https://docs.adobe.com/docs/en/cq/5-6-1/widgets-api/index.html?class=CQ.Ext.form.Hidden" target="_blank">CQ.Ext.form.Hidden</a> field for the 
+         <span style="font-style: italic;">TypeHint</span> request parameter.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="ec41b7e66a9600cbaeb6" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         You can also use Ext JS's 
+         <a href="https://docs.adobe.com/docs/en/cq/5-6-1/widgets-api/index.html?class=CQ.Ext.form.Checkbox" target="_blank">CQ.Ext.form.Checkbox</a> and 
+         <a href="https://docs.adobe.com/docs/en/cq/5-6/widgets-api/index.html?class=CQ.Ext.form.CheckboxGroup" target="_blank">CQ.Ext.form.CheckboxGroup</a> xtypes in the Classic UI as the most basic checkbox controls. By default the Checkbox xtype will simply submit the default/on value, meaning if you don't specify a value, the default value is &quot;on.&quot; You can use the 
+         <span style="font-style: italic;">inputValue</span> config option to change the value to the String literal &quot;true&quot; and you can use the 
+         <span style="font-style: italic;">TypeHint</span> suffix to save the String value as a proper Boolean.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="01ac869591c258e1e609" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         In the new Granite Touch UI, use the 
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/granite-ui/api/jcr_root/libs/granite/ui/components/foundation/form/checkbox/index.html" target="_blank">granite/ui/components/foundation/form/checkbox</a> resource to create the checkbox and the 
+         <a href="https://docs.adobe.com/docs/en/aem/6-1/ref/granite-ui/api/jcr_root/libs/granite/ui/components/foundation/form/hidden/index.html" target="_blank">granite/ui/components/foundation/form/hidden</a> resource for the 
+         <span style="font-style: italic;">TypeHint</span> suffix. The checkbox resource has the 
+         <span style="font-style: italic;">deleteHint</span> option to create the Sing Post Servlet 
+         <span style="font-style: italic;">Delete</span> suffix for you.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="e5eed811dc9c35961c23" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">Retrieving Boolean values</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         One point to keep in mind is that when you set a checkbox to checked as default dialog, the JCR property is not set until the dialog is opened and saved for the first time. A newly created component will not have that 
+         <span style="font-style: italic;">true</span> Boolean value that your Sightly or JSP will be looking for. Therefore, you need to also make sure that your logic is defaults to the 
+         <span style="font-style: italic;">true</span>&nbsp;value if the JCR property doesn't exist.
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <code class="gist" data-gist-id="9a7ea78d584318faa2aa" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code>
+         <br />
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         <span style="font-weight: bold;">Conclusion</span>
+        </div> 
+        <div>
+         <br />
+        </div> 
+        <div>
+         We discussed the basics and best practices of using checkboxes in AEM component dialogs. However, the checkboxes were a mere prelude into an introduction to the Sling Post Servlet. Hopefully you've come to realize what happens when you update a component; while AEM provides valuable functionality such as validation through Ext JS or Granite, ultimately, the component dialog is simply an HTML form posting to Apache Sling, which in turn handles the JCR update. We introduced four Sling Post Servlet Suffixes. It's important to know that their uses are not limited to checkboxes and that there are five other suffixes to explore, which are detailed in the 
+         <a href="https://sling.apache.org/documentation/bundles/manipulating-content-the-slingpostservlet-servlets-post.html" target="_blank">documentation</a>. You'll find that the Sling Post Servlet is extremely powerful and invaluable in the case of AEM component dialogs especially for checkboxes and multi-value properties.
+        </div> 
+       </div> 
+       <div class="blog-more-desc"> 
+        <div class="row"> 
+         <div class="col-sm-6 col-xs-12"> 
+          <ul class="list-inline social-colored"> 
+           <li class="empty-text">Share:</li> 
+           <li><a href="#"><i class="fa logo-l icon-in share" data-toggle="tooltip" title="" data-original-title="LinkedIn" data-placement="top" data-url="http://www.nateyolles.com/blog/2015/11/aem-checkboxes-using-sling-post-servlet" data-title="AEM Checkboxes and Semantic Property Types using the Sling Post Servlet" data-summary="Proper use of checkboxes in AEM components means creating semantic property types using the Sling Post Servlet." data-source="nateyolles.com"></i></a></li> 
+           <li><a href="#"><i class="fa logo-t icon-twit share" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top" data-text="AEM Checkboxes and Semantic Property Types using the Sling Post Servlet" data-via="nateyolles" data-url="http://www.nateyolles.com/blog/2015/11/aem-checkboxes-using-sling-post-servlet"></i></a></li> 
+           <li><a href="#"><i class="fa logo-f icon-f share" data-toggle="tooltip" title="" data-original-title="Facebook" data-placement="top"></i></a></li> 
+           <li><a href="#"><i class="fa logo-p icon-plus share" data-url="http://www.nateyolles.com/blog/2015/11/aem-checkboxes-using-sling-post-servlet" data-toggle="tooltip" title="" data-original-title="Google plus" data-placement="top"></i></a></li> 
+          </ul> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="col-md-3"> 
+      <div class="sidebar-box"> 
+       <h4>Follow Me</h4> 
+       <ul class="list-inline social-colored"> 
+        <li><a href="https://www.linkedin.com/in/nateyolles" target="_blank"><i class="fa logo-l icon-in" data-toggle="tooltip" title="" data-original-title="Linkedin" data-placement="top"></i></a></li> 
+        <li><a href="https://twitter.com/nateyolles" target="_blank"><i class="fa logo-t icon-twit" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top"></i></a></li> 
+        <li><a href="https://github.com/nateyolles" target="_blank"><i class="fa logo-g icon-git" data-toggle="tooltip" title="" data-original-title="GitHub" data-placement="top"></i></a></li> 
+        <li><a href="http://stackoverflow.com/users/3022863/nateyolles" target="_blank"><i class="fa logo-so icon-so" data-toggle="tooltip" title="" data-original-title="Stack Overflow" data-placement="top"></i></a></li> 
+       </ul> 
+      </div> 
+      <div class="sidebar-box"> 
+       <h4>All Blog Posts</h4> 
+       <div class="collapsible-blog-list list-group panel"> 
+        <a href="#collapsible-data-list-0" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2017 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-0"> 
+         <a href="#collapsible-data-list-0-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-0"> <i class="fa"></i> 05 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-0-0"> 
+          <a class="post list-group-item" title="Sync Crypto Keys across AEM 6.3 instances" href="/blog/2017/05/sharing-crypto-keys-in-aem-63">Sharing Crypto Keys in AEM 6.3</a> 
+          <a class="post list-group-item" title="Upgrade to the official OSGi Declarative Services (DS) Annotations from Apache Felix SCR annotations in Adobe Experience Manager (AEM)." href="/blog/2017/05/osgi-declarative-services-annotations-in-aem">Official OSGi Declarative Services Annotations in AEM</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-1" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2015 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-1"> 
+         <a href="#collapsible-data-list-1-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 09 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-0"> 
+          <a class="post list-group-item" title="Introducing the Publick Apache Sling + Sightly blog engine." href="/blog/2015/09/publick-apache-sling-sightly-blog-engine">Publick Apache Sling + Sightly blog engine</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 10 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-1"> 
+          <a class="post list-group-item" title="Programmatically read and update OSGi configurations in Adobe Experience Manager and Apache Sling using the ConfigurationAdmin service." href="/blog/2015/10/updating-osgi-configurations-in-aem-and-sling">Programmatically updating OSGi configurations in AEM and Sling</a> 
+          <a class="post list-group-item" title="Get the HTML for an AEM resource, component or page" href="/blog/2015/10/get-rendered-html-for-an-aem-resource-or-component">Get the rendered HTML for an AEM resource, component or page</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 11 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-2"> 
+          <a class="post list-group-item" title="Proper use of checkboxes in AEM components means creating semantic property types using the Sling Post Servlet." href="/blog/2015/11/aem-checkboxes-using-sling-post-servlet">AEM Checkboxes and Semantic Property Types using the Sling Post Servlet</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 12 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-3"> 
+          <a class="post list-group-item" title="Convert an AEM Page, Sling Resource, or JCR Node to JSON using the JsonItemWriter." href="/blog/2015/12/converting-aem-sling-resources-to-json">Converting AEM/Sling Resources to JSON</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-2" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2016 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-2"> 
+         <a href="#collapsible-data-list-2-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 01 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-0"> 
+          <a class="post list-group-item" title="Create a custom replication agent in Adobe Experience Manager to purge Akamai CDN cache." href="/blog/2016/01/aem-akamai-custom-replication-agent">Creating a custom Akamai replication agent in AEM</a> 
+          <a class="post list-group-item" title="Create a custom Granite UI adapter to disable the Multifield component." href="/blog/2016/01/aem-custom-granite-ui-adapter">Create a custom Granite UI adapter to disable the Multifield component</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 02 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-1"> 
+          <a class="post list-group-item" title="Custom validation in AEM Touch UI dialogs" href="/blog/2016/02/aem-touch-ui-custom-validation">AEM Touch UI Custom Validation</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 03 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-2"> 
+          <a class="post list-group-item" title="Use com.adobe.granite.confmgr.ConfMgr in AEM to set multi-tenant, ACL protected, inheritance supplied configurations." href="/blog/2016/03/aem-slash-conf-and-confmgr">AEM /conf and ConfMgr</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 06 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-3"> 
+          <a class="post list-group-item" title="Create custom HTML output for AEM clientlibs and Sightly to take advantage of HTML5 and enhance site performance." href="/blog/2016/06/custom-aem-html5-async-clientlibs">Custom AEM Clientlib Markup for HTML5</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-4" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 07 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-4"> 
+          <a class="post list-group-item" title="Use custom Granite render conditions to determine if Touch UI components should display in AEM." href="/blog/2016/07/aem-granite-custom-render-conditions">AEM Granite Custom Render Conditions</a> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="footer" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-6 col-sm-6 copyright"> 
+      <span>&copy; 2016 Nate Yolles</span> 
+     </div> 
+     <div class="col-md-6 col-sm-6 footer-nav">
+       Powered by the 
+      <a href="https://github.com/nateyolles/publick-sling-blog" target="_blank">Publick Sling + Sightly Blog Engine</a> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <a href="#" class="scrollToTop"><i class="fa fa-angle-up"></i></a> 
+  <script src="/etc/clientlibs/nateyolles/js/publick-nateyolles.min.js">
+  </script> 
+  <script src="https://www.google.com/recaptcha/api.js">
+  </script> 
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-19714698-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>  
+ </body>
+</html>

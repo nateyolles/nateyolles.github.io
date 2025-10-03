@@ -1,0 +1,220 @@
+<!DOCTYPE html> 
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en"> 
+ <head> 
+  <title>Programmatically updating OSGi configurations in AEM and Sling - Adobe Experience Manager | AEM/CQ | Apache Sling</title> 
+  <link href="http://www.nateyolles.com/blog/2015/10/updating-osgi-configurations-in-aem-and-sling" rel="canonical" /> 
+  <link href="/etc/clientlibs/nateyolles/css/publick-nateyolles.min.css" rel="stylesheet" /> 
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600" rel="stylesheet" type="text/css" /> 
+  <meta name="msapplication-config" content="/browserconfig.xml" /> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" /> 
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" /> 
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" /> 
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" /> 
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" /> 
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" /> 
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" /> 
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" /> 
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" /> 
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192" /> 
+  <link rel="icon" type="image/png" href="/android-chrome-96x96.png" sizes="96x96" /> 
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" /> 
+  <link rel="manifest" href="/manifest.json" /> 
+  <meta name="description" content="Programmatically read and update OSGi configurations in Adobe Experience Manager and Apache Sling using the ConfigurationAdmin service." /> 
+  <meta name="keywords" content="Adobe Experience Manager,AEM,CQ,apache felix,osgi,configurationadmin" /> 
+  <meta name="author" content="Nate Yolles" /> 
+  <meta property="og:title" content="Programmatically updating OSGi configurations in AEM and Sling - Nate Yolles - Adobe Experience Manager" /> 
+  <meta property="og:type" content="article" /> 
+  <meta property="article:published_time" content="2015-10-15" /> 
+  <meta property="article:modified_time" content="2015-10-15" /> 
+  <meta property="article:author" content="Nate Yolles" /> 
+  <meta property="article:section" content="Technology" /> 
+  <meta property="article:tag" content="Adobe Experience Manager" /> 
+  <meta property="article:tag" content="AEM" /> 
+  <meta property="article:tag" content="CQ5" /> 
+  <meta property="article:tag" content="apache felix" /> 
+  <meta property="article:tag" content="osgi" /> 
+  <meta property="article:tag" content="configurationadmin" /> 
+  <meta property="og:url" content="http://www.nateyolles.com/blog/2015/10/updating-osgi-configurations-in-aem-and-sling" /> 
+  <meta property="og:image" content="http://www.nateyolles.com/assets/images/aem-configuration-admin-service.jpg" /> 
+  <meta property="og:description" content="Programmatically read and update OSGi configurations in Adobe Experience Manager and Apache Sling using the ConfigurationAdmin service." /> 
+  <meta name="twitter:card" content="summary_large_image" /> 
+  <meta name="twitter:site" content="@nateyolles" /> 
+  <meta name="twitter:creator" content="@nateyolles" /> 
+  <meta name="twitter:title" content="Programmatically updating OSGi configurations in AEM and Sling - Nate Yolles - Adobe Experience Manager" /> 
+  <meta name="twitter:description" content="Programmatically read and update OSGi configurations in Adobe Experience Manager and Apache Sling using the ConfigurationAdmin service." /> 
+  <meta name="twitter:image" content="http://www.nateyolles.com/assets/images/aem-configuration-admin-service.jpg" /> 
+  <meta charset="utf-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+ </head> 
+ <body data-spy="scroll" data-target="#navigation" data-offset="75"> 
+  <section id="navigation"> 
+   <div class="navbar navbar-default navbar-static-top sticky" role="navigation"> 
+    <div class="container"> 
+     <div class="navbar-header"> 
+      <form>
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> 
+       <a class="navbar-brand" href="/">Nate Yolles</a> 
+      </form>
+     </div> 
+     <div class="navbar-collapse collapse"> 
+      <ul class="nav navbar-nav navbar-right scrollto"> 
+       <li><a href="/#home">Home</a></li> 
+       <li><a href="/#about">About</a></li> 
+       <li><a href="/#skills">Skills</a></li> 
+       <li><a href="/#work">Work</a></li> 
+       <li><a href="/#projects">projects</a></li> 
+       <li><a href="/#contact">Contact</a></li> 
+       <li><a href="/blog">Blog</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="page-head-bg" style="background-image: url('/assets/images/aem-configuration-admin-service.jpg');" class="parallax" data-stellar-background-ratio=".5"> 
+   <div class="container"> 
+    <h1><span class="post-heading">Programmatically updating OSGi configurations in AEM and Sling</span></h1> 
+    <h2><span class="post-heading">Adobe Experience Manager | AEM/CQ | Apache Sling</span></h2> 
+   </div> 
+  </section> 
+  <section id="blog-post" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-9"> 
+      <div class="blog-item-sec"> 
+       <div class="blog-item-head"> 
+        <h3>Programmatically updating OSGi configurations in AEM and Sling</h3> 
+       </div> 
+       <div class="blog-item-post-info"> 
+        <span class="scrollto">Nate Yolles | October 15, 2015 | <a href="#comments" class="blog-view-comments">336 comments</a> |</span> 
+       </div> 
+       <div class="blog-item-post-desc"> 
+        <p>OSGi components can be configured via the concept of <a href="https://osgi.org/javadoc/r4v42/org/osgi/service/cm/ManagedService.html" target="_blank">Managed Services</a> and <a href="https://osgi.org/javadoc/r4v42/org/osgi/service/cm/ManagedServiceFactory.html" target="_blank">Managed Service Factories</a>. Each component has a Service PID. Once a configuration has been updated, the changes are persisted to the file system. In Adobe Experience Manager you can find the files under the <code>crx-quickstart/launchpad/config</code> folder. If you're using the Sling jar, you can find the files under the <code>sling/config</code> folder.</p> 
+        <p>Hopefully you're following best practices and creating sling:OsgiConfig files so that configurations can be stored in your version control system and configured for specific server instances assigned by Sling run modes. When you want to manually update an OSGi configuration you do so through the Apache Felix console's Configuration screen located at <code>http://localhost:4502/system/console/configMgr</code>.</p> 
+        <p>You can programmatically read and update OSGi configurations through the Apache Felix provided <a href="https://osgi.org/javadoc/r4v42/org/osgi/service/cm/ConfigurationAdmin.html" target="_blank">ConfigurationAdmin</a> service. In fact, this is the same service used by the Apache Felix console. When you look at the Configuration console it tells you the status of the ConfigurationAdmin service. If you disable the Apache Felix Configuration Admin Service (<code>org.apache.felix.configadmin</code>) you will notice that you are no longer able to update configurations from the Felix console.</p> 
+        <p><img class="img-responsive" src="/content/assets/images/apache-sling-configuration-admin.jpg" /><br /></p> 
+        <p>Using the service is simple and straightforward. However, the one thing to watch out for is that updating the configuration though ConfigurationAdmin is an asynchronous call and the component associated with the configuration will become unavailable for a brief moment on update. That means trying to make rapid consecutive updates or trying to read from the configuration directly after an update is unreliable unless properly handled.</p> 
+        <p>The following example demonstrates how to get a <a href="https://osgi.org/javadoc/r4v42/org/osgi/service/cm/Configuration.html" target="_blank">Configuration</a> from a Managed Service as well as a Managed Service Factory, how to get properties from the configuration and how to update the configuration.</p> 
+        <p><code class="gist" data-gist-id="d0a547d814376e66f7aa" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code><br /></p> 
+        <p>The files below are a service I created for the <a href="https://github.com/nateyolles/publick-sling-blog" target="_blank">Publick Sling + Sightly Blog Engine</a> to manage configurations easily and consistently throughout the application as well as a sample consumer of the service.</p> 
+        <p><code class="gist" data-gist-id="47d1e9850475bc54347e" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code><br /></p> 
+        <p><code class="gist" data-gist-id="244f5db8f4d5a92048c2" data-gist-file="" data-gist-hide-line-numbers="false" data-gist-hide-footer="false" data-gist-show-loading="true" data-gist-show-spinner="false"></code><br /></p> 
+        <p>Further reading:</p> 
+        <p><a href="http://felix.apache.org/documentation/subprojects/apache-felix-config-admin.html" target="_blank">Apache Felix Configuration Admin Service</a><br /></p> 
+       </div> 
+       <div class="blog-more-desc"> 
+        <div class="row"> 
+         <div class="col-sm-6 col-xs-12"> 
+          <ul class="list-inline social-colored"> 
+           <li class="empty-text">Share:</li> 
+           <li><a href="#"><i class="fa logo-l icon-in share" data-toggle="tooltip" title="" data-original-title="LinkedIn" data-placement="top" data-url="http://www.nateyolles.com/blog/2015/10/updating-osgi-configurations-in-aem-and-sling" data-title="Programmatically updating OSGi configurations in AEM and Sling" data-summary="Programmatically read and update OSGi configurations in Adobe Experience Manager and Apache Sling using the ConfigurationAdmin service." data-source="nateyolles.com"></i></a></li> 
+           <li><a href="#"><i class="fa logo-t icon-twit share" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top" data-text="Programmatically updating OSGi configurations in AEM and Sling" data-via="nateyolles" data-url="http://www.nateyolles.com/blog/2015/10/updating-osgi-configurations-in-aem-and-sling"></i></a></li> 
+           <li><a href="#"><i class="fa logo-f icon-f share" data-toggle="tooltip" title="" data-original-title="Facebook" data-placement="top"></i></a></li> 
+           <li><a href="#"><i class="fa logo-p icon-plus share" data-url="http://www.nateyolles.com/blog/2015/10/updating-osgi-configurations-in-aem-and-sling" data-toggle="tooltip" title="" data-original-title="Google plus" data-placement="top"></i></a></li> 
+          </ul> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="col-md-3"> 
+      <div class="sidebar-box"> 
+       <h4>Follow Me</h4> 
+       <ul class="list-inline social-colored"> 
+        <li><a href="https://www.linkedin.com/in/nateyolles" target="_blank"><i class="fa logo-l icon-in" data-toggle="tooltip" title="" data-original-title="Linkedin" data-placement="top"></i></a></li> 
+        <li><a href="https://twitter.com/nateyolles" target="_blank"><i class="fa logo-t icon-twit" data-toggle="tooltip" title="" data-original-title="Twitter" data-placement="top"></i></a></li> 
+        <li><a href="https://github.com/nateyolles" target="_blank"><i class="fa logo-g icon-git" data-toggle="tooltip" title="" data-original-title="GitHub" data-placement="top"></i></a></li> 
+        <li><a href="http://stackoverflow.com/users/3022863/nateyolles" target="_blank"><i class="fa logo-so icon-so" data-toggle="tooltip" title="" data-original-title="Stack Overflow" data-placement="top"></i></a></li> 
+       </ul> 
+      </div> 
+      <div class="sidebar-box"> 
+       <h4>All Blog Posts</h4> 
+       <div class="collapsible-blog-list list-group panel"> 
+        <a href="#collapsible-data-list-0" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2017 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-0"> 
+         <a href="#collapsible-data-list-0-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-0"> <i class="fa"></i> 05 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-0-0"> 
+          <a class="post list-group-item" title="Sync Crypto Keys across AEM 6.3 instances" href="/blog/2017/05/sharing-crypto-keys-in-aem-63">Sharing Crypto Keys in AEM 6.3</a> 
+          <a class="post list-group-item" title="Upgrade to the official OSGi Declarative Services (DS) Annotations from Apache Felix SCR annotations in Adobe Experience Manager (AEM)." href="/blog/2017/05/osgi-declarative-services-annotations-in-aem">Official OSGi Declarative Services Annotations in AEM</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-1" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2015 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-1"> 
+         <a href="#collapsible-data-list-1-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 09 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-0"> 
+          <a class="post list-group-item" title="Introducing the Publick Apache Sling + Sightly blog engine." href="/blog/2015/09/publick-apache-sling-sightly-blog-engine">Publick Apache Sling + Sightly blog engine</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 10 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-1"> 
+          <a class="post list-group-item" title="Programmatically read and update OSGi configurations in Adobe Experience Manager and Apache Sling using the ConfigurationAdmin service." href="/blog/2015/10/updating-osgi-configurations-in-aem-and-sling">Programmatically updating OSGi configurations in AEM and Sling</a> 
+          <a class="post list-group-item" title="Get the HTML for an AEM resource, component or page" href="/blog/2015/10/get-rendered-html-for-an-aem-resource-or-component">Get the rendered HTML for an AEM resource, component or page</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 11 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-2"> 
+          <a class="post list-group-item" title="Proper use of checkboxes in AEM components means creating semantic property types using the Sling Post Servlet." href="/blog/2015/11/aem-checkboxes-using-sling-post-servlet">AEM Checkboxes and Semantic Property Types using the Sling Post Servlet</a> 
+         </div> 
+         <a href="#collapsible-data-list-1-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-1"> <i class="fa"></i> 12 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-1-3"> 
+          <a class="post list-group-item" title="Convert an AEM Page, Sling Resource, or JCR Node to JSON using the JsonItemWriter." href="/blog/2015/12/converting-aem-sling-resources-to-json">Converting AEM/Sling Resources to JSON</a> 
+         </div> 
+        </div> 
+        <a href="#collapsible-data-list-2" class="year list-group-item collapse-toggle collapsed" data-toggle="collapse"> <i class="fa"></i> 2016 </a> 
+        <div class="collapse sub-menu" id="collapsible-data-list-2"> 
+         <a href="#collapsible-data-list-2-0" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 01 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-0"> 
+          <a class="post list-group-item" title="Create a custom replication agent in Adobe Experience Manager to purge Akamai CDN cache." href="/blog/2016/01/aem-akamai-custom-replication-agent">Creating a custom Akamai replication agent in AEM</a> 
+          <a class="post list-group-item" title="Create a custom Granite UI adapter to disable the Multifield component." href="/blog/2016/01/aem-custom-granite-ui-adapter">Create a custom Granite UI adapter to disable the Multifield component</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-1" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 02 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-1"> 
+          <a class="post list-group-item" title="Custom validation in AEM Touch UI dialogs" href="/blog/2016/02/aem-touch-ui-custom-validation">AEM Touch UI Custom Validation</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-2" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 03 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-2"> 
+          <a class="post list-group-item" title="Use com.adobe.granite.confmgr.ConfMgr in AEM to set multi-tenant, ACL protected, inheritance supplied configurations." href="/blog/2016/03/aem-slash-conf-and-confmgr">AEM /conf and ConfMgr</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-3" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 06 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-3"> 
+          <a class="post list-group-item" title="Create custom HTML output for AEM clientlibs and Sightly to take advantage of HTML5 and enhance site performance." href="/blog/2016/06/custom-aem-html5-async-clientlibs">Custom AEM Clientlib Markup for HTML5</a> 
+         </div> 
+         <a href="#collapsible-data-list-2-4" class="month list-group-item collapse-toggle collapsed" data-toggle="collapse" data-parent="#collapsible-data-list-2"> <i class="fa"></i> 07 </a> 
+         <div class="collapse sub-menu" id="collapsible-data-list-2-4"> 
+          <a class="post list-group-item" title="Use custom Granite render conditions to determine if Touch UI components should display in AEM." href="/blog/2016/07/aem-granite-custom-render-conditions">AEM Granite Custom Render Conditions</a> 
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <section id="footer" class="padding-80"> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-6 col-sm-6 copyright"> 
+      <span>&copy; 2016 Nate Yolles</span> 
+     </div> 
+     <div class="col-md-6 col-sm-6 footer-nav">
+       Powered by the 
+      <a href="https://github.com/nateyolles/publick-sling-blog" target="_blank">Publick Sling + Sightly Blog Engine</a> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <a href="#" class="scrollToTop"><i class="fa fa-angle-up"></i></a> 
+  <script src="/etc/clientlibs/nateyolles/js/publick-nateyolles.min.js">
+  </script> 
+  <script src="https://www.google.com/recaptcha/api.js">
+  </script> 
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-19714698-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>  
+ </body>
+</html>
